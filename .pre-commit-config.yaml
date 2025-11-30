@@ -1,0 +1,28 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+
+-   repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+    -   id: black
+
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.14.4
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+
+- repo: local
+  hooks:
+    - id: run-tests
+      name: Run tests with pytest
+      #entry: bash -c "cd $(git rev-parse --show-toplevel) && poetry run pytest"
+      entry: poetry run pytest
+      language: system
+      always_run: true
+      pass_filenames: false
