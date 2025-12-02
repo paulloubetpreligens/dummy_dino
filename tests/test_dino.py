@@ -1,7 +1,7 @@
 import pytest
 import torch
 from dummy_dino.dino import Dino
-from torch.utils.data import DataLoader
+from dummy_dino.dataset import DinoDataset
 
 
 @pytest.fixture
@@ -57,18 +57,11 @@ class FakeDinoDataset(torch.utils.data.Dataset):
         return self.num_samples
 
     def __getitem__(self, idx) -> tuple[torch.Tensor, torch.Tensor]:
-        return self.features[idx], self.features[idx]
+        return self.features[idx]
 
 
-def test_train(dino_model: Dino):
+def test_train(dino_model: Dino, fake_dino_dataset: DinoDataset):
     # Given
-
-    fake_dataset = FakeDinoDataset(num_samples=32, feature_dim=10)
-    fake_dataloader = DataLoader(
-        fake_dataset,
-        batch_size=32,
-        shuffle=True,
-    )
 
     initial_s_weight = dino_model.student.weight.clone()
     initial_t_weight = dino_model.teacher.weight.clone()
@@ -76,7 +69,7 @@ def test_train(dino_model: Dino):
     # When
     dino_model.train(
         lr=0.5,
-        data_loader=fake_dataloader,
+        data_loader=fake_dino_dataset,
         epoch_number=1,
         optimizer_function=torch.optim.SGD,
     )

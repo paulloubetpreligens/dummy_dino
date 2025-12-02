@@ -1,6 +1,8 @@
 import torch
 from dataclasses import dataclass
 
+from dummy_dino.dataset import DinoDataset
+
 
 @dataclass
 class Dino:
@@ -27,7 +29,7 @@ class Dino:
     def train(
         self,
         lr: float,
-        data_loader: torch.utils.data.DataLoader,
+        data_loader: DinoDataset,
         epoch_number: int,
         optimizer_function: torch.optim.Optimizer,
     ) -> None:
