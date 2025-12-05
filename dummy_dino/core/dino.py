@@ -1,7 +1,8 @@
-import torch
 from dataclasses import dataclass
 
-from dummy_dino.dataset import DinoDataset
+import torch
+
+from dummy_dino.core.dataset import DinoDataset
 
 
 @dataclass
@@ -15,8 +16,8 @@ class Dino:
 
     @torch.no_grad()
     def update_teacher_weights(self, momentum_rate: float) -> None:
-        """
-        Update the teacher's weights using an Exponential Moving Average (EMA)
+        """Update the teacher's weights using an Exponential Moving Average (EMA).
+
         of the student's weights.
         """
         for teacher_param, student_param in zip(

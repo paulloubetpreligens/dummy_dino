@@ -1,7 +1,8 @@
 import pytest
 import torch
-from dummy_dino.dino import Dino
-from dummy_dino.dataset import DinoDataset
+
+from dummy_dino.core.dataset import DinoDataset
+from dummy_dino.core.dino import Dino
 
 
 @pytest.fixture

@@ -1,9 +1,11 @@
 """Configuration file for pytest, containing shared fixtures and helper classes."""
-import torch
-import pytest
 
 from functools import partial
-from dummy_dino.dataset import DinoDataset
+
+import pytest
+import torch
+
+from dummy_dino.core.dataset import DinoDataset
 
 
 class FakeBaseDataset(torch.utils.data.Dataset):
@@ -19,23 +21,24 @@ class FakeBaseDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx) -> torch.Tensor:
         return self.features[idx]
 
+
 @pytest.fixture
-def fake_base_dataset()->FakeBaseDataset:
+def fake_base_dataset() -> FakeBaseDataset:
     return FakeBaseDataset(num_samples=10, feature_dim=10)
 
 
-def fake_augmentation(input: torch.Tensor, coef: float)->torch.Tensor:
+def fake_augmentation(input: torch.Tensor, coef: float) -> torch.Tensor:
     return input * coef
 
 
 @pytest.fixture
-def fake_dino_dataset(fake_base_dataset:FakeBaseDataset)->DinoDataset:
+def fake_dino_dataset(fake_base_dataset: FakeBaseDataset) -> DinoDataset:
     teacher_augmentation = partial(
-        fake_augmentation, 
+        fake_augmentation,
         coef=0.9,
     )
     student_augmentation = partial(
-        fake_augmentation, 
+        fake_augmentation,
         coef=0.1,
     )
     return DinoDataset(
